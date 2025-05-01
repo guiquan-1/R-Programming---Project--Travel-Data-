@@ -1,6 +1,7 @@
 # Load libraries
 library(dplyr)
 library(readr)
+library(ggplot2)
 
 file_list <- list.files(path = "data", pattern = "*.csv", full.names = TRUE)
 
@@ -48,10 +49,21 @@ df_tour_era %>%
   count(SEXDSTN_FLAG_CD) %>%
   mutate(Percent = n / sum(n) * 100)
 
-# Top 10 most common travel purposes
-df_tour_era %>%
+# Prepare top 10 travel purposes
+top_purposes <- df_tour_era %>%
   count(TOUR_PURPS_NM, sort = TRUE) %>%
-  top_n(10)
+  slice_max(n, n = 10)
+
+# Plot with x-axis as travel purpose
+ggplot(top_purposes, aes(x = reorder(TOUR_PURPS_NM, -n), y = n)) +
+  geom_bar(stat = "identity", fill = "darkorange") +
+  labs(
+    title = "Top 10 Travel Purposes",
+    x = "Travel Purpose",
+    y = "Count"
+  ) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 
 
