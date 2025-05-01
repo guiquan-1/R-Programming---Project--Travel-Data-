@@ -19,6 +19,20 @@ dim(df_tour_era)
 # Column names
 names(df_tour_era)
 
-#hello
-#hihi
-#ggydh
+#More Descriptive Stats
+# Load needed libraries
+library(dplyr)
+
+# Frequency and proportion of gender
+df_tour_era %>%
+  count(SEXDSTN_FLAG_CD) %>%
+  mutate(Percent = n / sum(n) * 100)
+
+# Top 10 most common travel purposes
+df_tour_era %>%
+  count(TOUR_PURPS_NM, sort = TRUE) %>%
+  top_n(10)
+
+
+
+
