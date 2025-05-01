@@ -12,6 +12,16 @@ df_tour_era <- file_list %>%
 # Check result
 glimpse(df_tour_era)
 
+#code to clean the data
+df_clean_destination <- df_tour_era %>%
+  filter(TOUR_SIGNGU_NM != "모름")
+
+df_clean_companion <- df_clean_destination %>%
+  filter(TOUR_COM_NMPR_NM != "모름")
+
+glimpse(df_clean_companion)
+
+
 
 #Basic Data Visualization
 # View the first few rows
