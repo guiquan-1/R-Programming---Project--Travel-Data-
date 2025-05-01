@@ -1,7 +1,17 @@
+# Load libraries
+library(dplyr)
+library(readr)
 
-# Import the files
-df_tour_era   <- read.csv("data/CI_TOUR_ERA_CHARTR_INFO_20250331.csv", stringsAsFactors = FALSE)
-print(df_tour_era)
+file_list <- list.files(path = "data", pattern = "*.csv", full.names = TRUE)
+
+# Read and combine all files
+df_tour_era <- file_list %>%
+  lapply(read_csv) %>%      # read each file into a list
+  bind_rows()               # combine them into one big dataframe
+
+# Check result
+glimpse(df_tour_era)
+
 
 #Basic Data Visualization
 # View the first few rows
