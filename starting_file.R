@@ -3,9 +3,8 @@ library(dplyr)
 library(readr)
 library(ggplot2)
 
+### Data Preparation
 file_list <- list.files(path = "data", pattern = "*.csv", full.names = TRUE)
-
-# Read and combine all files
 df_tour_era <- file_list %>%
   lapply(read_csv) %>%      # read each file into a list
   bind_rows()               # combine them into one big dataframe
@@ -13,7 +12,11 @@ df_tour_era <- file_list %>%
 # Check result
 glimpse(df_tour_era)
 
-#code to clean the data
+#checking for missing data
+colSums(is.na(df_tour_era)) #shows number
+colSums(df_tour_era=='모름') #shows 모름
+
+#code to clean the data 
 df_clean_destination <- df_tour_era %>%
   filter(TOUR_SIGNGU_NM != "모름")
 
@@ -22,9 +25,7 @@ df_clean_companion <- df_clean_destination %>%
 
 glimpse(df_clean_companion)
 
-
-
-#Basic Data Visualization
+###Basic Data Visualization
 # View the first few rows
 head(df_tour_era)
 
