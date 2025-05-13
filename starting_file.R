@@ -9,6 +9,7 @@ df_tour_era <- file_list %>%
   lapply(read_csv) %>%      # read each file into a list
   bind_rows()               # combine them into one big dataframe
 
+
 # Check result
 glimpse(df_tour_era)
 
@@ -16,7 +17,7 @@ glimpse(df_tour_era)
 colSums(is.na(df_tour_era)) #shows number
 colSums(df_tour_era=='모름') #shows 모름
 
-#code to clean the data 
+#code to clean the data - pls transfer to required files 
 df_clean_destination <- df_tour_era %>%
   filter(TOUR_SIGNGU_NM != "모름")
 
@@ -24,6 +25,9 @@ df_clean_companion <- df_clean_destination %>%
   filter(TOUR_COM_NMPR_NM != "모름")
 
 glimpse(df_clean_companion)
+
+
+
 
 ###Basic Data Visualization
 # View the first few rows
