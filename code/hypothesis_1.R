@@ -1,6 +1,5 @@
 library(tidyverse)
 
-
 # Transform to long format
 df_long <- df_tour_era %>%
   pivot_longer(
