@@ -6,11 +6,6 @@
 
 #code to clean the data
 #since a lot of people who visited metropolitan cities answered "모름" on TOUR_SIGNGU_NM I skipped cleaning those data 
-df_clean <- df_tour_era2 %>%
-  filter(TOUR_SIGNGU_NM != "모름")
-
-df_clean <- df_clean %>%
-  filter(TOUR_COM_NMPR_NM != "모름")
 
 # Chi-square test to see if there's a relationship between age group and destination
 table_age_dest <- table(df_tour_era2$AGRDE_FLAG_NM, df_tour_era2$TOUR_CTPRVN_NM)
