@@ -29,25 +29,7 @@ df_clean_destination <- df_tour_era %>%
 
 # code to clean the data - remove '모름' from companion list 
 df_clean_companion <- df_clean_destination %>%
-  filter(COM_ONE_TY != "모름") %>%
-  
-  # Merge 충청남도 + 충청북도 into 충청권
-  mutate(TOUR_CTPRVN_NM = case_when(
-    TOUR_CTPRVN_NM %in% c("충청남도", "충청북도") ~ "충청권",
-    TRUE ~ TOUR_CTPRVN_NM)
-  ) %>%
-
-  # Merge 
-    mutate(TOUR_CTPRVN_NM = case_when(
-      TOUR_CTPRVN_NM %in% c("전라남도", "전라북도") ~ "전라권",
-      TRUE ~ TOUR_CTPRVN_NM)
-    ) %>%
-      
-      # Merge 
-      mutate(TOUR_CTPRVN_NM = case_when(
-        TOUR_CTPRVN_NM %in% c("경상남도", "경상북도") ~ "경상권",
-        TRUE ~ TOUR_CTPRVN_NM)
-        ) 
+  filter(COM_ONE_TY != "모름")
 
 glimpse(df_clean_companion)
 
@@ -61,35 +43,6 @@ df_clean_companion$COM_ONE_TY <- factor(df_clean_companion$COM_ONE_TY,
 )
 
 
-### option 1 - stacked bar graph categorized by companion (충천권, 전라권 등 일부 통합)
-custom_order <- c(
-  "서울시", "인천시", "경기도", "강원도", 
-  "충청권", "대전시", "경상권",
-  "전라권", "대구시", "울산시", "광주시", "부산시", "제주도"
-)
-
-# Summarize counts
-summary_data <- summary_data %>%
-  mutate(TOUR_CTPRVN_NM = factor(TOUR_CTPRVN_NM, levels = custom_order))
-
-# Create stacked bar graph - categorized by companion
-ggplot(summary_data, aes(x = COM_ONE_TY, y = n, fill = TOUR_CTPRVN_NM)) +
-  geom_bar(stat = "identity") +
-  labs(title = "Destination Breakdown by Travel Companion Type",
-       x = "Travel Companion Type",
-       y = "Count",
-       fill = "Destination") +
-  theme_minimal(base_family = "AppleGothic") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-
-
-
-
-
-
-
-
-
 ### option 1 - stacked bar graph categorized by companion (16개 특별시 및 자치도)
 custom_order <- c(
   "서울시", "인천시", "경기도", "강원도", 
@@ -99,8 +52,16 @@ custom_order <- c(
 )
 
 # Summarize counts
+summary_data <- df_clean_companion %>%
+  count(COM_ONE_TY, TOUR_CTPRVN_NM)
+
+# Custom order
 summary_data <- summary_data %>%
   mutate(TOUR_CTPRVN_NM = factor(TOUR_CTPRVN_NM, levels = custom_order))
+
+# Get rid of NA
+summary_data <- summary_data %>%
+  filter(!is.na(COM_ONE_TY), !is.na(TOUR_CTPRVN_NM))
 
 # Create stacked bar graph - categorized by companion
 ggplot(summary_data, aes(x = COM_ONE_TY, y = n, fill = TOUR_CTPRVN_NM)) +
