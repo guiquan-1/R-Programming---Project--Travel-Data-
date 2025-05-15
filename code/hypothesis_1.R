@@ -3,9 +3,9 @@ library(tidyverse)
 # Transform to long format
 df_long <- df_tour_era %>%
   pivot_longer(
-    cols = COM_ONE_TY,            # 오직 COM_ONE_TY만 변환
-    names_to = "companion_slot",  # 고정적으로 "COM_ONE_TY"가 들어감
-    values_to = "companion_type"  # 실제 동행자 유형 값들
+    cols = COM_ONE_TY,            
+    names_to = "companion_slot",  
+    values_to = "companion_type"  
   )
 
 
