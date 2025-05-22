@@ -16,6 +16,46 @@ df_hypo_5 <- df_tour_era %>%
 
 glimpse(df_hypo_5) #okay checked that it was removed - done!
 
+
+
+df_hypo_5 %>%
+  filter(!is.na(HSHLD_INCOME_DGREE_NM), !is.na(TOUR_PURPS_NM)) %>%
+  ggplot(aes(x = TOUR_PURPS_NM, fill = TOUR_PURPS_NM)) +
+  geom_bar(show.legend = FALSE) +
+  facet_wrap(~ HSHLD_INCOME_DGREE_NM, scales = "free_y") +
+  coord_flip() +
+  labs(
+    title = "Travel Purpose Distribution by Household Income Level",
+    x = "Travel Purpose",
+    y = "Number of Respondents"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.y = element_text(size = 9),
+    strip.text = element_text(size = 10, face = "bold")
+  )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #because of funny entries
 valid_income_levels <- c("300만원 미만", "300~500만원 미만", "500~700만원 미만", "700만원 이상")
 df_hypo_5 <- df_hypo_5 %>%
@@ -59,43 +99,28 @@ df_hypo_5 <- df_hypo_5 %>%
   )
 
 
+# Perform Chi-squared test
+chisq_test_result <- chisq.test(
+  table(df_hypo_5$HSHLD_INCOME_DGREE_NM, df_hypo_5$TOUR_PURPS_NM)
+)
 
-# visualise household income
-ggplot(df_hypo_5, aes(x = HSHLD_INCOME_DGREE_NM)) +
-  geom_bar(fill = "skyblue", alpha = 0.8) +
-  labs(title = "Household Income Distribution",
-       x = "Household Income Level", y = "Count") +
-  theme_minimal() +
-  theme(
-    axis.text.x = element_text(angle = 30, hjust = 1, size = 10),
-    plot.title = element_text(size = 14, face = "bold")
-  )
-
-
-#visualise tour purpose
-ggplot(df_hypo_5, aes(x = TOUR_PURPS_NM)) +
-  geom_bar(fill = "tomato", alpha = 0.8) +
-  labs(title = "Travel Purpose",
-       x = "Travel Purpose", y = "Count") +
-  theme_minimal() +
-  theme(
-    axis.text.x = element_text(angle = 30, hjust = 1, size = 10),
-    plot.title = element_text(size = 14, face = "bold")
-  )
-
-#compare income to travel purpose
-ggplot(df_hypo_5, aes(x = HSHLD_INCOME_DGREE_NM, fill = TOUR_PURPS_NM)) +
-  geom_bar(position = "fill") +
-  scale_y_continuous(labels = scales::percent) +
-  labs(title = "Travel Purpose by Household Income",
-       x = "Household Income Level", y = "Proportion") +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 30, hjust = 1))
-
-
-#to confirm relationship
-chisq.test(table(df_hypo_5$HSHLD_INCOME_DGREE_NM, df_hypo_5$TOUR_PURPS_NM))
+print(chisq_test_result)
 
 
 
+
+
+
+
+
+
+
+
+
+chisq_test_full <- chisq.test(
+  table(df_tour_era$HSHLD_INCOME_DGREE_NM, df_tour_era$TOUR_PURPS_NM)
+)
+
+# View the test result
+print(chisq_test_full)
 

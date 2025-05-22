@@ -10,6 +10,37 @@
 df_hypo_6 <- df_tour_era %>%
   filter(HSHLD_INCOME_DGREE_NM != "모름")
 
+
+
+# Filter out '모름' income
+df_plot <- df_tour_era %>%
+  filter(HSHLD_INCOME_DGREE_NM != "모름")
+
+# Plot
+ggplot(df_plot, aes(x = fct_infreq(TOUR_CTPRVN_NM), fill = TOUR_CTPRVN_NM)) +
+  geom_bar(show.legend = FALSE) +
+  facet_wrap(~ HSHLD_INCOME_DGREE_NM, scales = "free_x") +
+  coord_flip() +
+  labs(
+    title = "Travel Destination Distribution by Household Income Level",
+    x = "Province/Destination",
+    y = "Number of Respondents"
+  ) +
+  theme_minimal(base_family = "Arial") +
+  theme(strip.text = element_text(face = "bold", size = 12))
+
+
+
+# Perform Chi-squared test for income and destination
+chisq_test_income_destination <- chisq.test(
+  table(df_plot$HSHLD_INCOME_DGREE_NM, df_plot$TOUR_CTPRVN_NM)
+)
+
+# Print the result
+print(chisq_test_income_destination)
+
+
+
 #because of funny entries
 valid_income_levels <- c("300만원 미만", "300~500만원 미만", "500~700만원 미만", "700만원 이상")
 df_hypo_6 <- df_hypo_5 %>%
