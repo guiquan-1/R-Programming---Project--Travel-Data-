@@ -54,3 +54,4 @@ df_long_clean %>%
   geom_bar(stat = "identity", position = "fill") +
   labs(y = "Percentage", x = "Companion type", fill = "Tour Purpose") +
   theme_minimal()
+
